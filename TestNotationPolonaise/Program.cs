@@ -28,9 +28,58 @@ namespace TestNotationPolonaise
             return reponse;
         }
 
-        static int Polonaise(string formule)
+        static Double Polonaise(string formule)
         {
+            try
+            {
+                string[] tab = formule.Split(' ');
+                int nbCases = tab.Length;
 
+                while (nbCases > 1)
+                {
+                    int k = nbCases - 1;
+                    while (k > 0 && tab[k] != "+" && tab[k] != "-" && tab[k] != "*" && tab[k] != "/")
+                    {
+                        k--;
+                    }
+                    float a = float.Parse(tab[k + 1]);
+                    float b = float.Parse(tab[k + 2]);
+                    switch (tab[k])
+                    {
+                        case "+":
+                            tab[k] = (a + b).ToString();
+                            break;
+                        case "-":
+                            tab[k] = (a - b).ToString();
+                            break;
+                        case "*":
+                            tab[k] = (a * b).ToString();
+                            break;
+                        case "/":
+                            if (b == 0)
+                            {
+                                return Double.NaN;
+                            }
+                            tab[k] = (a / b).ToString();
+                            break;
+                    }
+                    for (int j = k + 1; j < nbCases - 2; j++)
+                    {
+                        tab[j] = tab[j + 2];
+                    }
+                    // les cases suivantes sont mises à blanc
+                    for (int j = nbCases - 2; j < nbCases; j++)
+                    {
+                        tab[j] = " ";
+                    }
+                    nbCases = nbCases - 2;
+                }
+                return Double.Parse(tab[0]);
+            }
+            catch
+            {
+                return Double.NaN;
+            }
         }
         /// <summary>
         /// Saisie de formules en notation polonaise pour tester la fonction de calcul
